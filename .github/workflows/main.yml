@@ -30,9 +30,9 @@ jobs:
           path: bandit-report.json
 
   image_scan:
-  name: Build Image and Run Image Scan
-  runs-on: ubuntu-latest
-  steps:
+    name: Build Image and Run Image Scan
+    runs-on: ubuntu-latest
+    steps:
     - name: Checkout code
       uses: actions/checkout@v4
 
