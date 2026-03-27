@@ -30,21 +30,18 @@ jobs:
           path: bandit-report.json
 
   image_scan:
-    name: Build Image and Run Image Scan
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
+  name: Build Image and Run Image Scan
+  runs-on: ubuntu-latest
+  steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
 
-      - name: Set up Docker
-        uses: docker-practice/actions-setup-docker@v1
+    - name: Build Docker Image
+      run: docker build -f Dockerfile -t myapp:latest .
 
-      - name: Build Docker Image
-        run: docker build -f Dockerfile -t myapp:latest .
-
-      - name: Docker Scout Scan
-        run: |
-          curl -sSfL https://raw.githubusercontent.com/docker/scout-cli/main/install.sh -o install-scout.sh
-          sh install-scout.sh
-          docker scout quickview
-          docker scout cves
+    - name: Docker Scout Scan
+      run: |
+        curl -sSfL https://raw.githubusercontent.com/docker/scout-cli/main/install.sh -o install-scout.sh
+        sh install-scout.sh
+        docker scout quickview
+        docker scout cves
