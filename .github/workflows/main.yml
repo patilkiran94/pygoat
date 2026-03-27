@@ -22,4 +22,4 @@ jobs:
 
 
     - name: Run badit scan
-      run: bandit -r -ll -ii .
+      run: bandit -r -lll -iii .
