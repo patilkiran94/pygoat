@@ -42,6 +42,11 @@ jobs:
         uses: docker-practice/actions-setup-docker@v1
         with:
           docker_version: '29.2.1'
+
+      - name: Show Docker config
+        run: 
+          sudo cat /etc/docker/daemon.json
+            
       - name: Build Docker Image
         run: docker build -f Dockerfile -t myapp:latest .
 
