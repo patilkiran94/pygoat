@@ -2,7 +2,7 @@ name: CI
 
 on:
   push:
-
+  
 jobs:
   sast_scan:
     name: Run Bandit Scan
@@ -10,10 +10,10 @@ jobs:
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v2
 
       - name: Set up Python
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@v4
         with:
           python-version: '3.8'
 
@@ -24,8 +24,33 @@ jobs:
         run: bandit -r -lll -iii . -f json -o bandit-report.json || true
 
       - name: Upload Artifact 
-        uses: actions/upload-artifact@v4 
+        uses: actions/upload-artifact@v5 
         if: always() 
         with: 
           name: bandit-findings 
           path: bandit-report.json
+
+  image_scan:
+    name: Build Image and Run Image Scan
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v6
+
+      - name: setup-docker
+        uses: docker-practice/actions-setup-docker@v1
+        with:
+          docker_version: '29.2.1'
+      - name: Build Docker Image
+        run: docker build -f Dockerfile -t myapp:latest .
+
+      - name: Docker Scout Scan
+        run: 
+          curl -fsSL https://raw.githubusercontent.com/docker/scout-cli/main/install.sh -o install-scout.sh
+          sh install-scout.sh
+          docker scout quickview
+          docker scout cves
+          
+  
+          
